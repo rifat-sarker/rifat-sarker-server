@@ -1,4 +1,4 @@
-import { Project } from "../../../types/common";
+import { Project } from "@prisma/client";
 import prisma from "../../utils/prisma";
 
 const createProjectIntoDB = async (payload: Project) => {

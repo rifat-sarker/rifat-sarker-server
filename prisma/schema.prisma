@@ -22,6 +22,7 @@ model User {
   role      Role     @default(admin)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Blog      Blog[]
 
   @@map("users")
 }
@@ -48,6 +49,8 @@ model Blog {
   content     String
   image       String?
   category    BlogCategory
+  authorId    String
+  author      User         @relation(fields: [authorId], references: [id])
   publishedAt DateTime     @default(now())
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt

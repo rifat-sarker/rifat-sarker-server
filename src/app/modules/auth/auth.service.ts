@@ -11,7 +11,7 @@ import config from '../../config';
 
 const authRegisterInToDB = async (payload: Partial<User>) => {
   const { name, email, password } = payload;
-  console.log(name, email, password);
+  // console.log(name, email, password);
   // console.log(payload);
   // Optional: Add validation checks here.
   if (!name || !email || !password) {

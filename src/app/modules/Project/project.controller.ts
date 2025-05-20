@@ -76,7 +76,7 @@ const updateProject = catchAsync(async (req, res) => {
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: "Event updated successfully",
+    message: "Project updated successfully",
     data: result,
   });
 });

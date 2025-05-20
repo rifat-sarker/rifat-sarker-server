@@ -9,18 +9,16 @@ app.use(express.json());
 app.use(cors());
 
 app.get("/", (request, response) => {
-  response.send("Welcome to bike servicing management system");
+  response.send("Welcome to my portfolio API");
 });
 
 // application routes
 app.use("/api", router);
-
 
 // global error handler
 app.use(globalErrorHandler);
 
 // not found
 app.use(notFound);
-
 
 export default app;

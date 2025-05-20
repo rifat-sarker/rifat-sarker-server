@@ -22,7 +22,7 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     success: false,
     status: statusCode,
     message,
-    stack: config.NODE_ENV === "development" ? err?.stack : undefined,
+    stack: config.node_env === "development" ? err?.stack : undefined,
   });
 };
 

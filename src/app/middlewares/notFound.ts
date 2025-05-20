@@ -8,7 +8,7 @@ const notFound = (req: Request, res: Response) => {
     success: false,
     status: httpStatus.NOT_FOUND,
     message: "API is not found",
-    stack: config.NODE_ENV === "development" ? new Error().stack : undefined,
+    stack: config.node_env === "development" ? new Error().stack : undefined,
   });
 };
 

@@ -30,30 +30,84 @@ const getAllProjects = catchAsync(async (req, res) => {
   });
 });
 
-
-//update event
-const updateEvent = catchAsync(async (req, res) => {
+const getProjectById = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const file = req.file;
-  const creatorId = req.user.id;
+  const result = await ProjectService.getProjectByIdFromDB(id);
 
-  const eventData = {
-    ...req.body,
-    creatorId,
-    eventImgUrl: file?.path, // set image URL
-  };
+  if (!result) {
+    throw new Error("Project not found");
+  }
 
-  const result = await ProjectService.updateProjectIntoDB(id, eventData);
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: 'Event updated successfully',
+    message: "Project retrieved successfully",
     data: result,
   });
 });
 
+//update project
+const updateProject = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const file = req.file;
+
+  if (!file) {
+    throw new Error("Image file is required");
+  }
+
+  // check user is admin
+  const user = req.user;
+  if (user.role !== "admin") {
+    throw new Error("You are not authorized to update this project");
+  }
+  // check project exists
+  const project = await ProjectService.getProjectByIdFromDB(id);
+  if (!project) {
+    throw new Error("Project not found");
+  }
+
+  const projectData = {
+    ...req.body,
+    image: file?.path,
+  };
+
+  const result = await ProjectService.updateProjectIntoDB(id, projectData);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Event updated successfully",
+    data: result,
+  });
+});
+
+const deleteProject = catchAsync(async (req, res) => {
+  const { id } = req.params;
+
+  // check user is admin
+  const user = req.user;
+  if (user.role !== "admin") {
+    throw new Error("You are not authorized to delete this project");
+  }
+
+  // check project exists
+  const project = await ProjectService.getProjectByIdFromDB(id);
+  if (!project) {
+    throw new Error("Project not found");
+  }
+
+  await ProjectService.deleteProjectFromDB(id);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Project deleted successfully",
+    data: null,
+  });
+});
 
 export const ProjectController = {
   createProject,
   getAllProjects,
+  getProjectById,
+  updateProject,
+  deleteProject,
 };

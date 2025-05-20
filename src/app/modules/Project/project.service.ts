@@ -13,6 +13,15 @@ const getAllProjectsFromDB = async () => {
   return result;
 };
 
+const getProjectByIdFromDB = async (id: string) => {
+  const result = await prisma.project.findUnique({
+    where: {
+      id,
+    },
+  });
+  return result;
+};
+
 // update project into db
 const updateProjectIntoDB = async (id: string, data: Partial<Project>) => {
   await prisma.project.findUniqueOrThrow({
@@ -28,8 +37,25 @@ const updateProjectIntoDB = async (id: string, data: Partial<Project>) => {
   return result;
 };
 
+// delete project into db
+const deleteProjectFromDB = async (id: string) => {
+  await prisma.project.findUniqueOrThrow({
+    where: {
+      id,
+    },
+  });
+  const result = await prisma.project.delete({
+    where: {
+      id,
+    },
+  });
+  return result;
+};
+
 export const ProjectService = {
   createProjectIntoDB,
   getAllProjectsFromDB,
+  getProjectByIdFromDB,
   updateProjectIntoDB,
+  deleteProjectFromDB,
 };

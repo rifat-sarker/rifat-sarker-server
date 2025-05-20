@@ -4,18 +4,12 @@ import sendResponse from "../../utils/sendResponse";
 import { SkillsService } from "./skill.service";
 
 const addSkill = catchAsync(async (req, res) => {
-  const file = req.file;
-  if (!file) {
-    throw new Error("Image file is required");
-  }
-  const skillData = { ...req.body, image: file.path };
-
-  const result = await SkillsService.addSkillIntoDB(skillData);
+  const result = await SkillsService.addSkillIntoDB(req.body);
 
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.CREATED,
-    message: "Skill addede successfully",
+    message: "Skill added successfully",
     data: result,
   });
 });

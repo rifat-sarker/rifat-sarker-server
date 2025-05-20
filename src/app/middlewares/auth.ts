@@ -1,11 +1,9 @@
-import { NextFunction, Request, Response } from 'express';
-
-import config from '../config';
-
-import httpStatus from 'http-status';
-import { JwtPayload } from 'jsonwebtoken';
-import { ApiError } from 'next/dist/server/api-utils';
-import { Jwthelper } from '../utils/jwtHelper';
+import { NextFunction, Request, Response } from "express";
+import config from "../config";
+import httpStatus from "http-status";
+import { JwtPayload } from "jsonwebtoken";
+import { Jwthelper } from "../utils/jwtHelper";
+import AppError from "../errors/AppError";
 
 const auth = (...roles: string[]) => {
   return async (
@@ -17,7 +15,7 @@ const auth = (...roles: string[]) => {
       const token = req.headers.authorization;
 
       if (!token) {
-        throw new ApiError(httpStatus.UNAUTHORIZED, 'You are not authorized!!');
+        throw new AppError(httpStatus.UNAUTHORIZED, "You are not authorized!!");
       }
 
       const varifiedUser = Jwthelper.verifyToken(
@@ -26,7 +24,7 @@ const auth = (...roles: string[]) => {
       ) as JwtPayload;
 
       if (roles.length && !roles.includes(varifiedUser.role)) {
-        throw new ApiError(httpStatus.FORBIDDEN, 'You are Forbidden!!');
+        throw new AppError(httpStatus.FORBIDDEN, "You are Forbidden!!");
       }
 
       req.user = varifiedUser;

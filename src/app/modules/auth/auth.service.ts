@@ -4,10 +4,10 @@ import { User } from '@prisma/client';
 
 import bcrypt from 'bcryptjs';
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import { ApiError } from 'next/dist/server/api-utils';
 import prisma from '../../utils/prisma';
 import { createToken } from '../../utils/createToken';
 import config from '../../config';
+import AppError from '../../errors/AppError';
 
 const authRegisterInToDB = async (payload: Partial<User>) => {
   const { name, email, password } = payload;
@@ -15,7 +15,7 @@ const authRegisterInToDB = async (payload: Partial<User>) => {
   // console.log(payload);
   // Optional: Add validation checks here.
   if (!name || !email || !password) {
-    throw new ApiError(
+    throw new AppError(
       httpStatus.NON_AUTHORITATIVE_INFORMATION,
       'Missing required fields'
     );
@@ -32,12 +32,12 @@ const authRegisterInToDB = async (payload: Partial<User>) => {
 
 
   if (isExistUser) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'User already exists');
+    throw new AppError(httpStatus.BAD_REQUEST, 'User already exists');
   }
 
   const hasPassword = await bcrypt.hash(password, 10);
   if (!hasPassword) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'bcrypt solt generate problem');
+    throw new AppError(httpStatus.BAD_REQUEST, 'bcrypt solt generate problem');
   }
   const registeredUser = await prisma.user.create({
     data: {
@@ -48,7 +48,7 @@ const authRegisterInToDB = async (payload: Partial<User>) => {
   });
 
   if (!registeredUser.id) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'user create problem');
+    throw new AppError(httpStatus.BAD_REQUEST, 'user create problem');
   }
   const jwtPayload = {
     id: registeredUser.id,
@@ -67,7 +67,7 @@ const authRegisterInToDB = async (payload: Partial<User>) => {
 
 const authLoginIntoDB = async (payload: Partial<User>) => {
   if (!payload.email || !payload.password) {
-    throw new ApiError(
+    throw new AppError(
       httpStatus.NON_AUTHORITATIVE_INFORMATION,
       'Missing required fields'
     );
@@ -77,7 +77,7 @@ const authLoginIntoDB = async (payload: Partial<User>) => {
   });
 
   if (!isExistUser) {
-    throw new ApiError(
+    throw new AppError(
       httpStatus.BAD_REQUEST,
       'Invilide email or password please try agin'
     );
@@ -89,7 +89,7 @@ const authLoginIntoDB = async (payload: Partial<User>) => {
   );
 
   if (!checkPassword) {
-    throw new ApiError(
+    throw new AppError(
       httpStatus.UNAUTHORIZED,
       'Invilide email or password please try agin'
     );
@@ -124,7 +124,7 @@ const refeshTokenInToForDb = async (paylood: string) => {
 
   const { email, role } = decode as JwtPayload;
   if (!decode) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'you ar not authorized');
+    throw new AppError(httpStatus.UNAUTHORIZED, 'you ar not authorized');
   }
   const isExistUser = await prisma.user.findUnique({
     where: {
@@ -132,7 +132,7 @@ const refeshTokenInToForDb = async (paylood: string) => {
     },
   });
   if (!isExistUser) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'you ar not authorized');
+    throw new AppError(httpStatus.BAD_REQUEST, 'you ar not authorized');
   }
   const jwtPayload = {
     id: isExistUser.id,

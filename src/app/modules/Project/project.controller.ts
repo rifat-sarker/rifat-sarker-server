@@ -20,6 +20,40 @@ const createProject = catchAsync(async (req, res) => {
   });
 });
 
+const getAllProjects = catchAsync(async (req, res) => {
+  const result = await ProjectService.getAllProjectsFromDB();
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Projects retrieved successfully",
+    data: result,
+  });
+});
+
+
+//update event
+const updateEvent = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const file = req.file;
+  const creatorId = req.user.id;
+
+  const eventData = {
+    ...req.body,
+    creatorId,
+    eventImgUrl: file?.path, // set image URL
+  };
+
+  const result = await ProjectService.updateProjectIntoDB(id, eventData);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Event updated successfully',
+    data: result,
+  });
+});
+
+
 export const ProjectController = {
   createProject,
+  getAllProjects,
 };

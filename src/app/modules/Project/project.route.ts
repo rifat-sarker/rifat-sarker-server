@@ -13,4 +13,5 @@ router.post(
   ProjectController.createProject
 );
 
+router.get("/", ProjectController.getAllProjects);
 export const ProjectRoutes = router;

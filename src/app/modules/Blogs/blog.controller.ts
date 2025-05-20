@@ -58,7 +58,7 @@ const updateBlog = catchAsync(async (req, res) => {
   }
 
   // check user is admin
-  const user = req.user;
+  // const user = req.user;
   console.log(user);
   if (user.role !== "admin") {
     throw new Error("You are not authorized to update this blog");

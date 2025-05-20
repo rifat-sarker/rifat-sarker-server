@@ -1,4 +1,4 @@
-import { sendEmail } from '../../app/shared/sendEmail';
+import { sendEmail } from "../../utils/sendEmail";
 
 export const sendAppEmail = async (
   to: string,

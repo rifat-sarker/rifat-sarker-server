@@ -59,12 +59,13 @@ model Blog {
 }
 
 model Skill {
-  id        String        @id @default(uuid())
-  name      String
-  icon      String?
-  category  SkillCategory @default(frontend)
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
+  id          String        @id @default(uuid())
+  name        String
+  icon        String?
+  description String?
+  category    SkillCategory @default(frontend)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
 
   @@map("skills")
 }

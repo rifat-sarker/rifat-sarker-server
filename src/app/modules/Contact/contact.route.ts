@@ -6,4 +6,4 @@ const router = express.Router();
 // POST request for sending mail
 router.post('/', handleSendEmail);
 
-export const MailRoutes = router;
+export const ContactRoutes = router;

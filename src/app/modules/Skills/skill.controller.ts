@@ -43,11 +43,6 @@ const getSkillById = catchAsync(async (req, res) => {
 //update skill
 const updateSkill = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const file = req.file;
-
-  if (!file) {
-    throw new Error("Image file is required");
-  }
 
   // check user is admin
   const user = req.user;
@@ -61,12 +56,7 @@ const updateSkill = catchAsync(async (req, res) => {
     throw new Error("Skill not found");
   }
 
-  const skillData = {
-    ...req.body,
-    image: file?.path,
-  };
-
-  const result = await SkillsService.updateSkillIntoDB(id, skillData);
+  const result = await SkillsService.updateSkillIntoDB(id, req.body);
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,

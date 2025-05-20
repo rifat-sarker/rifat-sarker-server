@@ -7,6 +7,7 @@ import { Role } from "@prisma/client";
 const router = express.Router();
 router.post(
   "/",
+  auth(Role.admin),
   multerUpload.single("file"),
   (req: Request, res: Response, next: NextFunction) => {
     req.body = JSON.parse(req.body.data);
@@ -20,15 +21,15 @@ router.get("/:id", ProjectController.getProjectById);
 router.patch(
   "/:id",
 
+  auth(Role.admin),
   multerUpload.single("file"),
   (req: Request, res: Response, next: NextFunction) => {
     req.body = JSON.parse(req.body.data);
     next();
   },
-  auth(Role.ADMIN),
   ProjectController.updateProject
 );
 
-router.delete("/:id", auth(Role.ADMIN), ProjectController.deleteProject);
+router.delete("/:id", auth(Role.admin), ProjectController.deleteProject);
 
 export const ProjectRoutes = router;

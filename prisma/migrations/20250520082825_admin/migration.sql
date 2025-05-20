@@ -1,4 +1,7 @@
 -- CreateEnum
+CREATE TYPE "Role" AS ENUM ('admin');
+
+-- CreateEnum
 CREATE TYPE "ProjectCategory" AS ENUM ('frontend', 'backend', 'fullstack', 'database');
 
 -- CreateEnum
@@ -6,6 +9,19 @@ CREATE TYPE "BlogCategory" AS ENUM ('javascript', 'typescript', 'python', 'html'
 
 -- CreateEnum
 CREATE TYPE "SkillCategory" AS ENUM ('frontend', 'backend', 'database', 'tools', 'management', 'teamwork');
+
+-- CreateTable
+CREATE TABLE "users" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "role" "Role" NOT NULL DEFAULT 'admin',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "users_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "projects" (
@@ -49,3 +65,6 @@ CREATE TABLE "skills" (
 
     CONSTRAINT "skills_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_email_key" ON "users"("email");

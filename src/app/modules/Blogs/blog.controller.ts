@@ -5,12 +5,28 @@ import { BlogService } from "./blog.service";
 
 const createBlog = catchAsync(async (req, res) => {
   const file = req.file;
-  const authorId = req.user.id;
+  const authorId = req.user?.id;
 
-  if (!file) {
-    throw new Error("Image file is required");
+  if (!authorId) {
+    throw new Error("Unauthorized: No user ID found");
   }
-  const blogData = { ...req.body, image: file.path };
+
+  // if (!file) {
+  //   throw new Error("Image file is required");
+  // }
+
+  const { title, content, category } = req.body;
+
+  if (!title || !content || !category) {
+    throw new Error("Missing required blog fields");
+  }
+
+  const blogData = {
+    title,
+    content,
+    category,
+    ...(file && { image: file.path }),
+  };
 
   const result = await BlogService.createBlogIntoDB(blogData, authorId);
 
@@ -21,6 +37,7 @@ const createBlog = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
 
 const getAllBlog = catchAsync(async (req, res) => {
   const result = await BlogService.getAllBlogsFromDB();

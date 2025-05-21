@@ -5,6 +5,7 @@ import { ProjectService } from "./project.service";
 
 const createProject = catchAsync(async (req, res) => {
   const file = req.file;
+
   if (!file) {
     throw new Error("Image file is required");
   }
@@ -51,9 +52,9 @@ const updateProject = catchAsync(async (req, res) => {
   const { id } = req.params;
   const file = req.file;
 
-  if (!file) {
-    throw new Error("Image file is required");
-  }
+  // if (!file) {
+  //   throw new Error("Image file is required");
+  // }
 
   // check user is admin
   const user = req.user;
@@ -69,7 +70,7 @@ const updateProject = catchAsync(async (req, res) => {
 
   const projectData = {
     ...req.body,
-    image: file?.path,
+    ...(file && { image: file.path }),
   };
 
   const result = await ProjectService.updateProjectIntoDB(id, projectData);

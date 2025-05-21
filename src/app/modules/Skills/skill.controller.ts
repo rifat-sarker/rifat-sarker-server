@@ -42,6 +42,9 @@ const getSkillById = catchAsync(async (req, res) => {
 
 //update skill
 const updateSkill = catchAsync(async (req, res) => {
+  console.log("PATCH data:", req.body);
+
+
   const { id } = req.params;
 
   // check user is admin
@@ -57,6 +60,9 @@ const updateSkill = catchAsync(async (req, res) => {
   }
 
   const result = await SkillsService.updateSkillIntoDB(id, req.body);
+
+console.log("Updated skill in DB:", result);
+
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,

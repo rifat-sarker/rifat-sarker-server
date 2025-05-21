@@ -1,26 +1,20 @@
 import { Blog } from "@prisma/client";
 import prisma from "../../utils/prisma";
 
-const createBlogIntoDB = async (payload: Partial<Blog>, authorId: string) => {
+const createBlogIntoDB = async (payload: Partial<Blog>) => {
   const result = await prisma.blog.create({
     data: {
       title: payload.title!,
       content: payload.content!,
       category: payload.category!,
       image: payload.image!,
-      authorId,
     },
   });
   return result;
 };
 
-
 const getAllBlogsFromDB = async () => {
-  const result = await prisma.blog.findMany({
-    include: {
-      author: true,
-    },
-  });
+  const result = await prisma.blog.findMany({});
   return result;
 };
 
@@ -28,9 +22,6 @@ const getBlogByIdFromDB = async (id: string) => {
   const result = await prisma.blog.findUnique({
     where: {
       id,
-    },
-    include: {
-      author: true,
     },
   });
   return result;

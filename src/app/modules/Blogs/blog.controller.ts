@@ -5,15 +5,15 @@ import { BlogService } from "./blog.service";
 
 const createBlog = catchAsync(async (req, res) => {
   const file = req.file;
-  const authorId = req.user?.id;
+  // const authorId = req.user?.id;
 
-  if (!authorId) {
-    throw new Error("Unauthorized: No user ID found");
-  }
-
-  // if (!file) {
-  //   throw new Error("Image file is required");
+  // if (!authorId) {
+  //   throw new Error("Unauthorized: No user ID found");
   // }
+
+  if (!file) {
+    throw new Error("Image file is required");
+  }
 
   const { title, content, category } = req.body;
 
@@ -28,7 +28,7 @@ const createBlog = catchAsync(async (req, res) => {
     ...(file && { image: file.path }),
   };
 
-  const result = await BlogService.createBlogIntoDB(blogData, authorId);
+  const result = await BlogService.createBlogIntoDB(blogData);
 
   sendResponse(res, {
     success: true,
@@ -67,31 +67,30 @@ const getBlogById = catchAsync(async (req, res) => {
 
 //update blog
 const updateBlog = catchAsync(async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.params; // Extract blog ID
   const file = req.file;
-
-  if (!file) {
-    throw new Error("Image file is required");
-  }
-
-  // check user is admin
   const user = req.user;
-  // console.log(user);
+
+  // Ensure only admin can update the blog
   if (user.role !== "admin") {
     throw new Error("You are not authorized to update this blog");
   }
-  // check blog exists
+
+  // Check if blog exists
   const blog = await BlogService.getBlogByIdFromDB(id);
   if (!blog) {
     throw new Error("Blog not found");
   }
 
+  // Prepare updated data
   const blogData = {
     ...req.body,
-    image: file?.path,
+    ...(file && { image: file.path }), // only include image if a new one is uploaded
   };
 
+  // Update blog in DB
   const result = await BlogService.updateBlogIntoDB(id, blogData);
+
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
@@ -99,6 +98,7 @@ const updateBlog = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
 
 const deleteBlog = catchAsync(async (req, res) => {
   const { id } = req.params;

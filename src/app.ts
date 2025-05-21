@@ -6,7 +6,16 @@ import globalErrorHandler from "./app/middlewares/globalErrorHandler";
 const app: Application = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://rifat-sarker-portfolio.vercel.app",
+    ],
+    credentials: true,
+  })
+);
 
 app.get("/", (request, response) => {
   response.send("Welcome to my portfolio API");

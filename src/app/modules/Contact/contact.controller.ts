@@ -31,7 +31,7 @@ export const handleSendEmail = async (req: Request, res: Response) => {
 
     res.status(200).json({
       success: true,
-      message: 'Email sent successfully',
+      message: "Email sent successfully",
     });
   } catch (error) {
     console.error('Error in handleSendEmail:', error);

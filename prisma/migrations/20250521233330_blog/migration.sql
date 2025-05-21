@@ -59,6 +59,7 @@ CREATE TABLE "skills" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "icon" TEXT,
+    "description" TEXT,
     "category" "SkillCategory" NOT NULL DEFAULT 'frontend',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,

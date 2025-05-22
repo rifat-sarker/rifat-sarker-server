@@ -5,11 +5,6 @@ import { BlogService } from "./blog.service";
 
 const createBlog = catchAsync(async (req, res) => {
   const file = req.file;
-  // const authorId = req.user?.id;
-
-  // if (!authorId) {
-  //   throw new Error("Unauthorized: No user ID found");
-  // }
 
   if (!file) {
     throw new Error("Image file is required");

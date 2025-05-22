@@ -10,6 +10,7 @@ const createBlogIntoDB = async (payload: Partial<Blog>) => {
       image: payload.image!,
     },
   });
+  
   return result;
 };
 

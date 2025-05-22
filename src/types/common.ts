@@ -53,7 +53,6 @@ export type Blog = {
   content: string;
   image?: string | null;
   category: BlogCategory;
-  author: string;
   publishedAt: Date;
   createdAt: Date;
   updatedAt: Date;

@@ -12,6 +12,7 @@ app.use(
     origin: [
       "http://localhost:3000",
       "https://rifat-sarker-portfolio.vercel.app",
+      "https://rifat-sarker-dashboard.vercel.app",
     ],
     credentials: true,
   })

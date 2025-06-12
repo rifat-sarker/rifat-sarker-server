@@ -22,6 +22,8 @@ const createProject = catchAsync(async (req, res) => {
 });
 
 const getAllProjects = catchAsync(async (req, res) => {
+  res.setHeader("Cache-Control", "no-store");
+  
   const result = await ProjectService.getAllProjectsFromDB();
   sendResponse(res, {
     success: true,

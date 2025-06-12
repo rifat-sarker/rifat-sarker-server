@@ -1,6 +1,7 @@
 import { Project } from "@prisma/client";
 import prisma from "../../utils/prisma";
 
+
 const createProjectIntoDB = async (payload: Project) => {
   const result = await prisma.project.create({
     data: payload,

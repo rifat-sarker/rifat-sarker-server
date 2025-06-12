@@ -9,7 +9,11 @@ const createProjectIntoDB = async (payload: Project) => {
 };
 
 const getAllProjectsFromDB = async () => {
-  const result = await prisma.project.findMany();
+  const result = await prisma.project.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
   return result;
 };
 
